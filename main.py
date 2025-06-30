@@ -113,13 +113,13 @@ async def get_summary(lat: float = Query(...), lon: float = Query(...)):
             max_temp = max(daily["temperature_2m_max"])
             avg_sunshine = round(sum(s / 3600 for s in daily["sunshine_duration"]) / len(daily["sunshine_duration"]), 2)
 
-            # Group hourly pressures by date
+
             pressure_by_day = defaultdict(list)
             for time_str, pressure in zip(hourly["time"], hourly["pressure_msl"]):
                 date = time_str.split("T")[0]
                 pressure_by_day[date].append(pressure)
 
-            # Take the first 7 available days of pressure data
+
             pressures = [sum(vals) / len(vals) for key, vals in sorted(pressure_by_day.items())[:7]]
             avg_pressure = round(sum(pressures) / len(pressures), 2)
 
