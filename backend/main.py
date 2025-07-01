@@ -4,8 +4,17 @@ import httpx
 from typing import List
 from collections import defaultdict
 from datetime import datetime
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 BASE_URL = "https://api.open-meteo.com/v1/forecast"
 POWER_KW = 2.5
@@ -123,7 +132,7 @@ async def get_summary(lat: float = Query(...), lon: float = Query(...)):
             pressures = [sum(vals) / len(vals) for key, vals in sorted(pressure_by_day.items())[:7]]
             avg_pressure = round(sum(pressures) / len(pressures), 2)
 
-            rain_days = sum(1 for code in daily["weathercode"] if code in range(51, 67))
+            rain_days = sum(1 for code in daily["weathercode"] if code in range(51, 99))
             weekly_summary = "z opadami" if rain_days >= 4 else "bez opadów"
 
             return WeeklySummary(

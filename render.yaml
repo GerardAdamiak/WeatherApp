@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: weather-backend
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: PORT
+        value: 10000
+    repo: https://github.com/your-username/your-repo
+    branch: main
+    rootDir: backend
+
+  - type: static
+    name: weather-frontend
+    env: static
+    buildCommand: ""
+    staticPublishPath: frontend
+    repo: https://github.com/your-username/your-repo
+    branch: main
